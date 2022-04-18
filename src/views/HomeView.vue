@@ -6,6 +6,7 @@ export default {
       message: "Welcome to a list of places!",
       places: [],
       newPlaceParams: {},
+      currentPlace: {},
     };
   },
   created: function () {
@@ -29,6 +30,11 @@ export default {
           console.log("error creating place", error.response);
         });
     },
+    showPlace: function (place) {
+      console.log(place);
+      this.currentPlace = place;
+      document.querySelector("#place-details").showModal();
+    },
   },
 };
 </script>
@@ -45,10 +51,25 @@ export default {
       <br />
       <button v-on:click="createPlace()">Add new place!</button>
     </div>
-    <!-- indexPlace -->
+    <!-- indexPlace with indexShow Modal -->
     <div v-for="place in places" v-bind:key="place.id">
       <h2>Name: {{ place.name }}</h2>
-      <h4>Address: {{ place.address }}</h4>
+      <!-- <h4>Address: {{ place.address }}</h4> -->
+      <button v-on:click="showPlace(place)">More info</button>
+      <dialog id="place-details">
+        <form method="dialog">
+          <h1>Additional details</h1>
+          <p>
+            Name:
+            <input type="text" v-model="currentPlace.name" />
+          </p>
+          <p>
+            Address:
+            <input type="text" v-model="currentPlace.address" />
+          </p>
+          <button>Close</button>
+        </form>
+      </dialog>
     </div>
   </div>
 </template>
